@@ -2,31 +2,34 @@
 #define DP_POLY_HPP_
 
 #include <iostream>
+#include <limits>
+#include <vector>
+#include "mat.hpp"
 #include "vec2.hpp"
 
-template <typename T>
-void pts_seg_dist(const vec2<T>* pts, const size_t i, const size_t j, T* dist)
-{
-	typedef vec2<T> vec2t;
+using std::vector;
 
+template <typename T>
+void pts_seg_dist(const vector< vec2<T> >& pts, const size_t i, const size_t j, vector<T>& dist)
+{
 	if (j - i >= 0)
 	{
 		// first point "i" of the segment
-		const vec2t& pi = pts[i];
+		const vec2<T>& pi = pts[i];
 
 		// vector u connecting first point "i" with last "j"
-		vec2t u = pts[j] - pts[i];
+		vec2<T> u = pts[j] - pts[i];
 		T un2 = u.norm2();
 
 		// compute distances to all inner points
 		for (size_t k = i + 1; k < j; ++k)
 		{
 			// vector v connecting first point "i" with point "k"
-			vec2t v = pts[k] - pi;
+			vec2<T> v = pts[k] - pi;
 			T vn2 = v.norm2();
 
 			// squared value of dot product of vectors u and v
-			T dp = vec2t::dot(u, v);
+			T dp = vec2<T>::dot(u, v);
 			T dp2 = dp * dp;
 
 			// squared value of L2 distance to point "k"
@@ -40,7 +43,7 @@ void pts_seg_dist(const vec2<T>* pts, const size_t i, const size_t j, T* dist)
 }
 
 template <typename T>
-T pts_seg_dist_sum(const vec2<T>* pts, const size_t i, const size_t j, T* dist)
+T pts_seg_dist_sum(const vector< vec2<T> >& pts, const size_t i, const size_t j, vector<T>& dist)
 {
 	// compute distances to all points
 	pts_seg_dist(pts, i, j, dist);
@@ -53,23 +56,56 @@ T pts_seg_dist_sum(const vec2<T>* pts, const size_t i, const size_t j, T* dist)
 }
 
 template <typename T>
-void dp_open(const vec2<T>* pts, const size_t nPts)
+vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nPts, const size_t nVert)
 {
-	T* dist = new T[nPts * nPts];
-	T* distBuff = new T[nPts];
+	mat<T> dist(nPts, nPts);
+	vector<T> distBuff(nPts);
+	mat<T> cost(nVert, nPts);
+	mat<size_t> prev(nVert, nPts);
+	vector<size_t> ind(nVert);
 
+	// precompute points to segments distances
 	for (size_t i = 0; i < nPts; ++i)
 	{
 		for (size_t j = i; j < nPts; ++j)
 		{
-			dist[i * nPts + j] = pts_seg_dist_sum(pts, i, j, distBuff);
-			std::cout << dist[i * nPts + j] <<  " ";
+			dist.at(i, j) = pts_seg_dist_sum(pts, i, j, distBuff);
 		}
-		std::cout << std::endl;
 	}
 
-	delete [] distBuff;
-	delete [] dist;
+	// initialize costs and previous pointers for single approximating segment
+	for (size_t j = 1; j < (nPts - nVert + 2); ++j)
+	{
+		cost.at(1, j) = dist.at(0, j);
+		prev.at(1, j) = 0;
+	}
+
+	// compute all cost and previous pointers
+	for (size_t i = 2; i < nVert; ++i)
+	{
+		for (size_t j = i; j < nPts - nVert + i; ++j)
+		{
+			cost.at(i, j) = std::numeric_limits<T>::max();
+			for (size_t k = i - 1; k < j; ++k)
+			{
+				T c = cost.at(i - 1, k) + dist.at(k, j);
+				if (c < cost.at(i, j))
+				{
+					cost.at(i, j) = c;
+					prev.at(i, j) = k;
+				}
+			}
+		}
+	}
+
+	// trace optimal approximation path
+	ind[nVert - 1] = nPts - 1;
+	for (size_t k = nVert - 1; k > 0; --k)
+	{
+		ind[k - 1] = prev.at(k, ind[k]);
+	}
+
+	return ind;
 }
 
 #endif
