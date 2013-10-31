@@ -58,8 +58,10 @@ T pts_seg_dist_sum(const vector< vec2<T> >& pts, const size_t i, const size_t j,
 }
 
 template <typename T>
-vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nPts, const size_t nVert)
+vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nVert)
 {
+	size_t nPts = pts.size();
+
 	mat<T> dist(nPts, nPts);
 	vector<T> distBuff(nPts);
 	mat<T> cost(nVert, nPts);

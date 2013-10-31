@@ -11,7 +11,6 @@ using std::endl;
 typedef vec2<double> v2t;
 typedef mat<double> mt;
 
-
 int main(int argc, char** argv)
 {
 //	const size_t m = 3;
@@ -31,7 +30,7 @@ int main(int argc, char** argv)
 	for (size_t i = 0; i < n; ++i) pts[i] = v2t(ptsArr[i], ptsArr[n + i]);
 
 	// run polygonal approximation
-	vector<size_t> ind = dp_open(pts, n, m);
+	vector<size_t> ind = dp_open(pts, m);
 
 	return 0;
 }
