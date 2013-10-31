@@ -1,3 +1,5 @@
+#ifndef NMEX
+
 #include <mex.h>
 #include <vector>
 #include "dp_poly.hpp"
@@ -73,3 +75,5 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 			}
 		}
 }
+
+#endif

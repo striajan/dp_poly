@@ -1,3 +1,5 @@
+#ifndef NMEX
+
 #ifndef MEX_UTILS_HPP_
 #define MEX_UTILS_HPP_
 
@@ -17,5 +19,7 @@ T* mx_create_numeric_matrix(size_t m, size_t n, mxClassID class_id, mxArray*& ar
 	array = mxCreateNumericMatrix(static_cast<mwSize>(m), static_cast<mwSize>(n), class_id, mxREAL);
 	return mx_get_data<T>(array);
 }
+
+#endif
 
 #endif
