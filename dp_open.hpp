@@ -1,7 +1,6 @@
 #ifndef DP_OPEN_HPP_
 #define DP_OPEN_HPP_
 
-#include <iostream>
 #include <limits>
 #include <vector>
 #include "debug.hpp"
@@ -17,20 +16,12 @@ vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nVert)
 {
 	size_t nPts = pts.size();
 
-	mat<T> dist(nPts, nPts);
-	vector<T> distBuff(nPts);
+	// precompute points to segments distances
+	mat<T> dist = pts_seg_dist_sum_seq(pts);
+
 	mat<T> cost(nVert, nPts);
 	mat<size_t> prev(nVert, nPts);
 	vector<size_t> ind(nVert);
-
-	// precompute points to segments distances
-	for (size_t j = 0; j < nPts; ++j)
-	{
-		for (size_t k = j; k < nPts; ++k)
-		{
-			dist(j, k) = pts_seg_dist_sum(pts, j, k, distBuff);
-		}
-	}
 
 	// initialize costs and previous pointers for single approximating segment
 	for (size_t j = 1; j < (nPts - nVert + 2); ++j)

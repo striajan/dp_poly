@@ -1,7 +1,10 @@
 #ifndef DISTANCE_HPP_
 #define DISTANCE_HPP_
 
+#include <algorithm>
 #include <vector>
+#include "mat.hpp"
+#include "utils.hpp"
 #include "vec2.hpp"
 
 using std::vector;
@@ -50,6 +53,49 @@ T pts_seg_dist_sum(const vector< vec2<T> >& pts, const size_t i, const size_t j,
 	for (size_t k = i + 1; k < j; ++k) distSum += dist[k];
 
 	return distSum;
+}
+
+template <typename T>
+mat<T> pts_seg_dist_sum_seq(const vector< vec2<T> >& pts)
+{
+	size_t nPts = pts.size();
+
+	mat<T> dist(nPts, nPts, 0);
+	vector<T> distBuff(nPts);
+
+	for (size_t j = 0; j < nPts - 2; ++j)
+	{
+		for (size_t k = j + 2; k < nPts; ++k)
+		{
+			dist(j, k) = pts_seg_dist_sum(pts, j, k, distBuff);
+		}
+	}
+
+	return dist;
+}
+
+template <typename T>
+mat<T> pts_seg_dist_sum_cyc(const vector< vec2<T> >& pts)
+{
+	size_t nPts = pts.size();
+
+	// create vector containing all points in two sequences
+	vector< vec2<T> > pts2(2 * nPts);
+	std::copy(pts.begin(), pts.end(), pts2.begin());
+	std::copy(pts.begin(), pts.end(), pts2.begin() + nPts);
+
+	mat<T> dist(nPts, nPts, 0);
+	vector<T> distBuff2(2 * nPts);
+
+	for (size_t j = 0; j < nPts; ++j)
+	{
+		for (size_t k = j + 2; k < j + nPts; ++k)
+		{
+			dist(j, k % nPts) = pts_seg_dist_sum(pts2, j, k, distBuff2);
+		}
+	}
+
+	return dist;
 }
 
 #endif
