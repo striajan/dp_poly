@@ -7,15 +7,13 @@
 #include <vector>
 #include "debug.hpp"
 
-using std::vector;
-
 template <typename T>
 class mat
-	: public vector<T>
+	: public std::vector<T>
 {
 private:
 
-	typedef vector<T> vec;
+	typedef std::vector<T> vec;
 
 public:
 

@@ -1,7 +1,7 @@
-dp_poly:
-	mex dp_poly_mex.cpp
+dp_open:
+	mex dp_open_mex.cpp
 
-all: dp_poly
+all: dp_open
 
 clean:
 	rm *.mexa64

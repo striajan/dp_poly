@@ -2,7 +2,7 @@
 #include <vector>
 #include "mat.hpp"
 #include "vec2.hpp"
-#include "dp_poly.hpp"
+#include "dp_open.hpp"
 
 using std::vector;
 using std::cout;

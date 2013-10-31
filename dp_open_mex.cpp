@@ -2,7 +2,7 @@
 
 #include <mex.h>
 #include <vector>
-#include "dp_poly.hpp"
+#include "dp_open.hpp"
 #include "mex_utils.hpp"
 #include "vec2.hpp"
 
