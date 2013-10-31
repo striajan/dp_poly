@@ -4,7 +4,9 @@
 #include <iostream>
 #include <limits>
 #include <vector>
+#include "debug.hpp"
 #include "mat.hpp"
+#include "utils.hpp"
 #include "vec2.hpp"
 
 using std::vector;
@@ -65,34 +67,34 @@ vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nPts, const si
 	vector<size_t> ind(nVert);
 
 	// precompute points to segments distances
-	for (size_t i = 0; i < nPts; ++i)
+	for (size_t j = 0; j < nPts; ++j)
 	{
-		for (size_t j = i; j < nPts; ++j)
+		for (size_t k = j; k < nPts; ++k)
 		{
-			dist.at(i, j) = pts_seg_dist_sum(pts, i, j, distBuff);
+			dist(j, k) = pts_seg_dist_sum(pts, j, k, distBuff);
 		}
 	}
 
 	// initialize costs and previous pointers for single approximating segment
 	for (size_t j = 1; j < (nPts - nVert + 2); ++j)
 	{
-		cost.at(1, j) = dist.at(0, j);
-		prev.at(1, j) = 0;
+		cost(1, j) = dist(0, j);
+		prev(1, j) = 0;
 	}
 
 	// compute all cost and previous pointers
 	for (size_t i = 2; i < nVert; ++i)
 	{
-		for (size_t j = i; j < nPts - nVert + i; ++j)
+		for (size_t j = i; j <= nPts - nVert + i; ++j)
 		{
-			cost.at(i, j) = std::numeric_limits<T>::max();
+			cost(i, j) = std::numeric_limits<T>::max();
 			for (size_t k = i - 1; k < j; ++k)
 			{
-				T c = cost.at(i - 1, k) + dist.at(k, j);
-				if (c < cost.at(i, j))
+				T c = cost(i - 1, k) + dist(k, j);
+				if (c < cost(i, j))
 				{
-					cost.at(i, j) = c;
-					prev.at(i, j) = k;
+					cost(i, j) = c;
+					prev(i, j) = k;
 				}
 			}
 		}
@@ -102,8 +104,13 @@ vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nPts, const si
 	ind[nVert - 1] = nPts - 1;
 	for (size_t k = nVert - 1; k > 0; --k)
 	{
-		ind[k - 1] = prev.at(k, ind[k]);
+		ind[k - 1] = prev(k, ind[k]);
 	}
+
+	DPRINTLN("DISTANCES:\n" << dist);
+	DPRINTLN("COSTS:\n" << cost);
+	DPRINTLN("PREVIOUS POINTERS:\n" << prev);
+	DPRINTLN("TRACED INDICES:\n" << ind);
 
 	return ind;
 }

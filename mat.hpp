@@ -1,7 +1,11 @@
 #ifndef MAT_HPP_
 #define MAT_HPP_
 
+#include <algorithm>
+#include <cassert>
+#include <ostream>
 #include <vector>
+#include "debug.hpp"
 
 using std::vector;
 
@@ -13,24 +17,52 @@ private:
 
 	typedef vector<T> vec;
 
+public:
+
 	const size_t m;
 	const size_t n;
 
-public:
-
-	mat(size_t m_, size_t n_)
-		: vec(m_ * n_), m(m_), n(n_)
-	{ }
-
-	reference& at(size_t i, size_t j)
+	mat(size_t m_, size_t n_, const T& val = T())
+		: vec(m_ * n_, val), m(m_), n(n_)
 	{
-		return vec::at(i * m + j);
 	}
 
-	const_reference& at(size_t i, size_t j) const
+	T& operator()(size_t i, size_t j)
 	{
-		return vec::at(i * m + j);
+		check_range(i, j);
+		return (*this)[i + j * m];
+	}
+
+	const T& operator()(size_t i, size_t j) const
+	{
+		check_range(i, j);
+		return (*this)[i + j * m];
+	}
+
+private:
+
+	void check_range(size_t i, size_t j) const
+	{
+		assert(0 <= i && i < m);
+		assert(0 <= j && j < n);
 	}
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const mat<T>& m)
+{
+	for (size_t i = 0; i < m.m; ++i)
+	{
+		for (size_t j = 0; j < m.n; ++j)
+		{
+			os.precision(3);
+			os.width(8);
+			os << m(i, j);
+		}
+		os << std::endl;
+	}
+
+	return os;
+}
 
 #endif

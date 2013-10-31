@@ -9,11 +9,13 @@ struct vec2
 	T x;
 	T y;
 
-	vec2(const T& x_, const T& y_)
-	{
-		x = x_;
-		y = y_;
-	}
+	vec2(const T& x_ = T(), const T& y_ = T())
+		: x(x_), y(y_)
+	{ }
+
+	vec2(const vec2& v)
+		: x(v.x), y(v.y)
+	{ }
 
 	T norm2() const
 	{
