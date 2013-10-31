@@ -32,8 +32,23 @@ void pts_seg_dist(const vector< vec2<T> >& pts, const size_t i, const size_t j, 
 			T dp = vec2<T>::dot(u, v);
 			T dp2 = dp * dp;
 
+			// squared value of position parameter
+			T t2 = dp2 / un2;
+
 			// squared value of L2 distance to point "k"
-			dist[k] = vn2 - (dp2 / un2);
+			if (dp < 0)
+			{
+				dist[k] = vn2;
+			}
+			else if (t2 > un2)
+			{
+				vec2<T> w = pts[k] - pts[j];
+				dist[k] = w.norm2();
+			}
+			else
+			{
+				dist[k] = vn2 - t2;
+			}
 		}
 	}
 

@@ -54,7 +54,7 @@ std::ostream& operator<<(std::ostream& os, const mat<T>& m)
 		for (size_t j = 0; j < m.n; ++j)
 		{
 			os.precision(3);
-			os.width(8);
+			os.width(6);
 			os << m(i, j);
 		}
 		os << std::endl;
