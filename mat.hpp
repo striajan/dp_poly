@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iomanip>
 #include <ostream>
 #include <vector>
 #include "debug.hpp"
@@ -49,13 +50,22 @@ private:
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const mat<T>& m)
 {
+	const size_t WIDTH = 6;
+	const size_t PRECISION = 3;
+
+	os << std::setw(WIDTH) << "X";
+	for (size_t j = 0; j < m.n; ++j)
+	{
+		os << std::setw(WIDTH) << j;
+	}
+	os << std::endl;
+
 	for (size_t i = 0; i < m.m; ++i)
 	{
+		os << std::setw(WIDTH) << i;
 		for (size_t j = 0; j < m.n; ++j)
 		{
-			os.precision(3);
-			os.width(6);
-			os << m(i, j);
+			os << std::setprecision(PRECISION) << std::setw(WIDTH) << m(i, j);
 		}
 		os << std::endl;
 	}
