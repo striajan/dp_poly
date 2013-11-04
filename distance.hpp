@@ -18,22 +18,22 @@ void pts_seg_dist(const vector< vec2<T> >& pts, const size_t i, const size_t j, 
 		const vec2<T>& pi = pts[i];
 
 		// vector u connecting first point "i" with last "j"
-		vec2<T> u = pts[j] - pts[i];
-		T un2 = u.norm2();
+		const vec2<T> u = pts[j] - pts[i];
+		const T un2 = u.norm2();
 
 		// compute distances to all inner points
 		for (size_t k = i + 1; k < j; ++k)
 		{
 			// vector v connecting first point "i" with point "k"
-			vec2<T> v = pts[k] - pi;
-			T vn2 = v.norm2();
+			const vec2<T> v = pts[k] - pi;
+			const T vn2 = v.norm2();
 
 			// squared value of dot product of vectors u and v
-			T dp = vec2<T>::dot(u, v);
-			T dp2 = dp * dp;
+			const T dp = vec2<T>::dot(u, v);
+			const T dp2 = dp * dp;
 
 			// squared value of position parameter
-			T t2 = dp2 / un2;
+			const T t2 = dp2 / un2;
 
 			// squared value of L2 distance to point "k"
 			if (dp < 0)
@@ -73,7 +73,7 @@ T pts_seg_dist_sum(const vector< vec2<T> >& pts, const size_t i, const size_t j,
 template <typename T>
 mat<T> pts_seg_dist_sum_seq(const vector< vec2<T> >& pts)
 {
-	size_t nPts = pts.size();
+	const size_t nPts = pts.size();
 
 	mat<T> dist(nPts, nPts, 0);
 	vector<T> distBuff(nPts);
@@ -92,7 +92,7 @@ mat<T> pts_seg_dist_sum_seq(const vector< vec2<T> >& pts)
 template <typename T>
 mat<T> pts_seg_dist_sum_cyc(const vector< vec2<T> >& pts)
 {
-	size_t nPts = pts.size();
+	const size_t nPts = pts.size();
 
 	// create vector containing all points in two sequences
 	vector< vec2<T> > pts2(2 * nPts);

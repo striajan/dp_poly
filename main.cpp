@@ -40,8 +40,8 @@ int main(int argc, char** argv)
 	}
 
 	// run polygonal approximation
-	vector<size_t> ind = dp_open(pts, m);
-//	vector<size_t> ind = dp_close(pts, m);
+//	vector<size_t> ind = dp_open(pts, m);
+	vector<size_t> ind = dp_close(pts, m);
 
 	return 0;
 }

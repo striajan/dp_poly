@@ -15,22 +15,24 @@ using std::vector;
 template <typename T>
 vector<size_t> dp_open(const vector< vec2<T> >& pts, size_t nVert)
 {
-	size_t nPts = pts.size();
+	const size_t nPts = pts.size();
 
 	// precompute points to segments distances
-	mat<T> dist = pts_seg_dist_sum_seq(pts);
+	const mat<T> dist = pts_seg_dist_sum_seq(pts);
 
 	// initialize costs and previous pointers for single approximating segment
 	mat<T> cost(nVert, nPts);
 	mat<size_t> prev(nVert, nPts);
-	dp_fill_first_row(nPts, dist, cost, prev);
+	dp_fill_dist_row(nPts, dist, cost, prev);
 
 	// compute all cost and previous pointers
 	for (size_t i = 2; i < nVert; ++i)
 	{
 		for (size_t j = i; j <= nPts - nVert + i; ++j)
 		{
-			dp_fill_cell(nPts, dist, i, j, i - 1, j, cost, prev);
+			const size_t k1 = i - 1;
+			const size_t k2 = j - 1;
+			dp_fill_cell(nPts, dist, i, j, k1, k2, cost, prev);
 		}
 	}
 
