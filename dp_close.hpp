@@ -67,6 +67,9 @@ vector<size_t> dp_close(const vector< vec2<T> >& pts, const size_t nVert)
 	size_t imin = nVert;
 	size_t jmin = nPts;
 
+	size_t testedPairs = 0;
+	size_t conjugPairs = 0;
+
 	// select conjugate end point
 	for (size_t i = nVert; i <= 2 * nVert; ++i)
 	{
@@ -87,16 +90,22 @@ vector<size_t> dp_close(const vector< vec2<T> >& pts, const size_t nVert)
 					imin = i;
 					jmin = j;
 				}
+
+				++conjugPairs;
 			}
+
+			++testedPairs;
 		}
 	}
+
+	DPRINTLN(conjugPairs << " / " << testedPairs);
 
 	// trace the optimal path
 	const vector<size_t> ind = dp_trace_path(nPts, nVert, imin, jmin, prev);
 
-	DPRINTLN("DISTANCES:\n" << dist);
-	DPRINTLN("COSTS:\n" << cost);
-	DPRINTLN("PREVIOUS:\n" << prev);
+//	DPRINTLN("DISTANCES:\n" << dist);
+//	DPRINTLN("COSTS:\n" << cost);
+//	DPRINTLN("PREVIOUS:\n" << prev);
 	DPRINTLN("INDICES:\n" << ind);
 
 	return ind;

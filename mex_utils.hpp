@@ -20,6 +20,6 @@ T* mx_create_numeric_matrix(size_t m, size_t n, mxClassID class_id, mxArray*& ar
 	return mx_get_data<T>(array);
 }
 
-#endif
+#endif // MEX_UTILS_HPP_
 
-#endif
+#endif // NMEX

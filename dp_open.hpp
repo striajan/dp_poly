@@ -38,9 +38,9 @@ vector<size_t> dp_open(const vector< vec2<T> >& pts, const size_t nVert)
 	// trace the optimal path
 	const vector<size_t> ind = dp_trace_path(nPts, nVert, nVert - 1, nPts - 1, prev);
 
-	DPRINTLN("DISTANCES:\n" << dist);
-	DPRINTLN("COSTS:\n" << cost);
-	DPRINTLN("PREVIOUS:\n" << prev);
+//	DPRINTLN("DISTANCES:\n" << dist);
+//	DPRINTLN("COSTS:\n" << cost);
+//	DPRINTLN("PREVIOUS:\n" << prev);
 	DPRINTLN("INDICES:\n" << ind);
 
 	return ind;

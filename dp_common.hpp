@@ -51,21 +51,17 @@ std::vector<size_t> dp_trace_path(const size_t nPts, const size_t nVert,
 	// index of vertex 'p' can go over 'nPts' so we have to modulo
 	size_t p = j;
 	ind[nVert - 1] = j % nPts;
-	size_t rmin = nVert - 1;
 
 	// trace path
 	for (size_t r = 0; r < nVert - 1; ++r)
 	{
 		p = prev(i - r, p);
 		ind[nVert - 2 - r] = p % nPts;
-		if (p < ind[rmin]) rmin = p;
 	}
 
-	// rotate so the minimum index goes first
-	if (rmin > 0)
-	{
-		std::rotate(ind.begin(), ind.begin() + rmin, ind.end());
-	}
+	// rotate indices so that the least one goes first
+	std::vector<size_t>::iterator it = std::min_element(ind.begin(), ind.end());
+	std::rotate(ind.begin(), it, ind.end());
 
 	return ind;
 }
