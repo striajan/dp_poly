@@ -53,8 +53,9 @@ int main(int argc, char** argv)
 	const size_t m = 14;
 
 	// run polygonal approximation
-//	vector<size_t> ind = dp_open(pts, m);
-	vector<size_t> ind = dp_close(pts, m);
+//	dp_open<double> dp;
+	dp_close<double> dp;
+	vector<size_t> ind = dp(pts, m);
 
 	return 0;
 }
