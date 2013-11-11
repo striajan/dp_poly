@@ -41,9 +41,13 @@ public:
 			}
 		}
 
-		// trace the optimal path
-		const std::vector<size_t> ind = base::trace_path(nPts, nVert, nVert - 1, nPts - 1, prev);
-		DPRINTLN("INDICES:\n" << ind);
+		// backtrack the optimal path
+		std::vector<size_t> ind(nVert);
+		ind[nVert - 1] = nPts - 1;
+		for (size_t i = nVert - 1; i > 0; --i)
+		{
+			ind[i - 1] = prev(i, ind[i]);
+		}
 
 		return ind;
 	}

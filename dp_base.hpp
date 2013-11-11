@@ -53,29 +53,6 @@ protected:
 		prev(i, j) = kmin;
 	}
 
-	static std::vector<size_t> trace_path(const size_t nPts, const size_t nVert,
-			const size_t i, const size_t j, const mat<size_t>& prev)
-	{
-		std::vector<size_t> ind(nVert);
-
-		// index of vertex 'p' can go over 'nPts' so we have to modulo
-		size_t p = j;
-		ind[nVert - 1] = j % nPts;
-
-		// trace path
-		for (size_t r = 0; r < nVert - 1; ++r)
-		{
-			p = prev(i - r, p);
-			ind[nVert - 2 - r] = p % nPts;
-		}
-
-		// rotate indices so that the least one goes first
-		std::vector<size_t>::iterator it = std::min_element(ind.begin(), ind.end());
-		std::rotate(ind.begin(), it, ind.end());
-
-		return ind;
-	}
-
 };
 
 #endif

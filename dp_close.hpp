@@ -1,6 +1,7 @@
 #ifndef DP_CLOSE_HPP_
 #define DP_CLOSE_HPP_
 
+#include <algorithm>
 #include <limits>
 #include <vector>
 #include "debug.hpp"
@@ -29,6 +30,8 @@ public:
 		// initialize costs and previous pointers for single approximating segment
 		mat<T> cost(2 * nVert + 1, 2 * nPts + 1, -1);
 		mat<size_t> prev(2 * nVert + 1, 2 * nPts + 1, 9999);
+		cost(0, 0) = 0;
+		prev(0, 0) = 0;
 		base::fill_dist_row(nPts, nVert, dist, cost, prev);
 
 		// first cycle (i = 2..nVert)
@@ -69,38 +72,48 @@ public:
 			}
 		}
 
-		// cost and position of the minimal conjugated end-point
-		size_t cmin = std::numeric_limits<T>::max();
-		size_t imin = nVert;
-		size_t jmin = nPts;
+		// full path, optimal sub-path and its estimated cost
+		std::vector<size_t> path(2 * nVert + 1);
+		std::vector<size_t> ind(nVert, 0);
+		T minCost = std::numeric_limits<T>::max();
 
-		// select conjugated end-point having the minimal estimated cost
+		// select conjugated points having the minimal estimated cost
 		for (size_t i = nVert; i <= 2 * nVert; ++i)
 		{
 			for (size_t j = i - nVert + nPts; j <= 2 * nPts - 2 * nVert + i; ++j)
 			{
-				size_t p = j;
-				for (size_t k = 0; k < nVert; ++k)
-				{
-					p = prev(i - k, p);
-				}
+				// begin with the point in the second half of the state space
+				path[i] = j;
 
-				if (p == i - nVert)
+				// backtrack; k is unsigned so (k = -1) => (k = max(size_t)) => (k >= i)
+				for (size_t k = i - 1; k < i; --k)
 				{
-					const T c = cost(i, j) - cost(i - nVert, p);
-					if (c < cmin)
+					// always continue to the previous point on the optimal path from beginning
+					path[k] = prev(k + 1, path[k + 1]);
+
+					// first point has to be in the first half and second point has to be in path;
+					// the points have to be conjugated (one cycle far away from each other)
+					if ((k <= nVert) && (k + nVert <= i) && (path[k] + nPts == path[k + nVert]))
 					{
-						cmin = c;
-						imin = i;
-						jmin = j;
+						const T c1 = cost(k, path[k]);
+						const T c2 = cost(k + nVert, path[k + nVert]);
+						const T c = c2 - c1;
+						if (c < minCost)
+						{
+							minCost = c;
+							std::copy(path.begin() + k, path.begin() + k + nVert, ind.begin());
+						}
 					}
 				}
 			}
 		}
 
-		// trace the optimal path
-		const std::vector<size_t> ind = base::trace_path(nPts, nVert, imin, jmin, prev);
-		DPRINTLN("INDICES:\n" << ind);
+		// ensure that all indices are in range {0,...,nPts-1}
+		for (size_t i = 0; i < nVert; ++i) ind[i] = ind[i] % nPts;
+
+		// rotate indices so that the least one goes first
+		std::vector<size_t>::iterator it = std::min_element(ind.begin(), ind.end());
+		std::rotate(ind.begin(), it, ind.end());
 
 		return ind;
 	}
