@@ -1,5 +1,8 @@
-% remove old binaries
+fprintf('Removing old binaries...\n');
 delete *.mexw64
 
-% compile
+fprintf('Compiling DP algorithm for open curves...\n');
 mex dp_open_mex.cpp
+
+fprintf('Compiling DP algorithm for close curves...\n');
+mex dp_close_mex.cpp

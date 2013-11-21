@@ -80,15 +80,14 @@
   <ItemGroup>
     <ClInclude Include="debug.hpp" />
     <ClInclude Include="distance.hpp" />
+    <ClInclude Include="dp_base.hpp" />
     <ClInclude Include="dp_close.hpp" />
     <ClInclude Include="dp_open.hpp" />
     <ClInclude Include="mat.hpp" />
-    <ClInclude Include="mex_utils.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="vec2.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dp_open_mex.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
