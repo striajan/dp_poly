@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <omp.h>
 #include "mat.hpp"
 #include "utils.hpp"
 #include "vec2.hpp"
@@ -78,6 +79,7 @@ mat<T> pts_seg_dist_sum_seq(const vector< vec2<T> >& pts)
 	mat<T> dist(nPts, nPts, 0);
 	vector<T> distBuff(nPts);
 
+	#pragma omp parallel for shared(pts, dist) firstprivate(distBuff)
 	for (size_t j = 0; j < nPts - 2; ++j)
 	{
 		for (size_t k = j + 2; k < nPts; ++k)
@@ -102,6 +104,7 @@ mat<T> pts_seg_dist_sum_cyc(const vector< vec2<T> >& pts)
 	mat<T> dist(nPts, nPts, 0);
 	vector<T> distBuff2(2 * nPts);
 
+	#pragma omp parallel for shared(pts2, dist) firstprivate(distBuff2)
 	for (size_t j = 0; j < nPts; ++j)
 	{
 		for (size_t k = j + 2; k < j + nPts; ++k)

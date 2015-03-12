@@ -54,8 +54,8 @@ int main(int argc, char** argv)
 	const size_t m = 14;
 
 	// run polygonal approximation
-//	dp_open<double> dp;
-	dp_close<double> dp;
+	dp_open<double> dp;
+//	dp_close<double> dp;
 
 	auto t0 = system_clock::now();
 	vector<size_t> ind = dp(pts, m);
