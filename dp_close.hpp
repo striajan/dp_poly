@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <limits>
 #include <vector>
+#include <omp.h>
 #include "debug.hpp"
 #include "distance.hpp"
 #include "dp_base.hpp"
@@ -37,6 +38,7 @@ public:
 		// first cycle (i = 2..nVert)
 		for (size_t i = 2; i <= nVert; ++i)
 		{
+			#pragma omp parallel for
 			for (size_t j = i; j <= nPts - nVert + i; ++j)
 			{
 				const size_t k1 = i - 1;
@@ -46,6 +48,7 @@ public:
 		}
 
 		// long row (i = nVert)
+		#pragma omp parallel for
 		for (size_t j = nPts + 1; j < 2 * nPts - nVert + 1; ++j)
 		{
 			const size_t k1 = std::max(nVert - 1, j - nPts + 1);
@@ -54,6 +57,7 @@ public:
 		}
 
 		// row above long row (i = nVert+1)
+		#pragma omp parallel for
 		for (size_t j = nPts + 1; j < 2 * nPts - nVert + 2; ++j)
 		{
 			const size_t k1 = std::max(nVert, j - nPts + 1);
@@ -64,6 +68,7 @@ public:
 		// second cycle (i = nVert+2..2*nVert)
 		for (size_t i = nVert + 2; i <= 2 * nVert; ++i)
 		{
+			#pragma omp parallel for
 			for (size_t j = i - nVert + nPts; j <= 2 * nPts - 2 * nVert + i; ++j)
 			{
 				const size_t k1 = i - nVert + nPts - 1;

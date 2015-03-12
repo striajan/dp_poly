@@ -2,6 +2,7 @@
 #define DP_OPEN_HPP_
 
 #include <vector>
+#include <omp.h>
 #include "debug.hpp"
 #include "distance.hpp"
 #include "dp_base.hpp"
@@ -33,6 +34,7 @@ public:
 		// compute all cost and previous pointers
 		for (size_t i = 2; i < nVert; ++i)
 		{
+			#pragma omp parallel for
 			for (size_t j = i; j <= nPts - nVert + i; ++j)
 			{
 				const size_t k1 = i - 1;
