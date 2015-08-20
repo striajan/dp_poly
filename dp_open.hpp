@@ -35,8 +35,9 @@ public:
 		for (size_t i = 2; i < nVert; ++i)
 		{
 			#pragma omp parallel for
-			for (size_t j = i; j <= nPts - nVert + i; ++j)
+			for (int j_ = static_cast<int>(i); j_ <= static_cast<int>(nPts - nVert + i); ++j_)
 			{
+				const size_t j = static_cast<size_t>(j_);
 				const size_t k1 = i - 1;
 				const size_t k2 = j - 1;
 				base::fill_cell(nPts, dist, i, j, k1, k2, cost, prev);

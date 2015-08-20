@@ -80,8 +80,9 @@ mat<T> pts_seg_dist_sum_seq(const vector< vec2<T> >& pts)
 	vector<T> distBuff(nPts);
 
 	#pragma omp parallel for shared(pts, dist) firstprivate(distBuff)
-	for (size_t j = 0; j < nPts - 2; ++j)
+	for (int j_ = 0; j_ < static_cast<int>(nPts - 2); ++j_)
 	{
+		const size_t j = static_cast<size_t>(j_);
 		for (size_t k = j + 2; k < nPts; ++k)
 		{
 			dist(j, k) = pts_seg_dist_sum(pts, j, k, distBuff);
@@ -105,8 +106,9 @@ mat<T> pts_seg_dist_sum_cyc(const vector< vec2<T> >& pts)
 	vector<T> distBuff2(2 * nPts);
 
 	#pragma omp parallel for shared(pts2, dist) firstprivate(distBuff2)
-	for (size_t j = 0; j < nPts; ++j)
+	for (int j_ = 0; j_ < static_cast<int>(nPts); ++j_)
 	{
+		const size_t j = static_cast<size_t>(j_);
 		for (size_t k = j + 2; k < j + nPts; ++k)
 		{
 			dist(j, k % nPts) = pts_seg_dist_sum(pts2, j, k, distBuff2);

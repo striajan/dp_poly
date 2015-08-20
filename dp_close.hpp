@@ -39,8 +39,9 @@ public:
 		for (size_t i = 2; i <= nVert; ++i)
 		{
 			#pragma omp parallel for
-			for (size_t j = i; j <= nPts - nVert + i; ++j)
+			for (int j_ = static_cast<int>(i); j_ <= static_cast<int>(nPts - nVert + i); ++j_)
 			{
+				const size_t j = static_cast<size_t>(j_);
 				const size_t k1 = i - 1;
 				const size_t k2 = j - 1;
 				base::fill_cell(nPts, dist, i, j, k1, k2, cost, prev);
@@ -49,8 +50,9 @@ public:
 
 		// long row (i = nVert)
 		#pragma omp parallel for
-		for (size_t j = nPts + 1; j < 2 * nPts - nVert + 1; ++j)
+		for (int j_ = static_cast<int>(nPts + 1); j_ < static_cast<int>(2 * nPts - nVert + 1); ++j_)
 		{
+			const size_t j = static_cast<size_t>(j_);
 			const size_t k1 = std::max(nVert - 1, j - nPts + 1);
 			const size_t k2 = nPts - 1;
 			base::fill_cell(nPts, dist, nVert, j, k1, k2, cost, prev);
@@ -58,8 +60,9 @@ public:
 
 		// row above long row (i = nVert+1)
 		#pragma omp parallel for
-		for (size_t j = nPts + 1; j < 2 * nPts - nVert + 2; ++j)
+		for (int j_ = static_cast<int>(nPts + 1); j_ < static_cast<int>(2 * nPts - nVert + 2); ++j_)
 		{
+			const size_t j = static_cast<size_t>(j_);
 			const size_t k1 = std::max(nVert, j - nPts + 1);
 			const size_t k2 = j - 1;
 			base::fill_cell(nPts, dist, nVert + 1, j, k1, k2, cost, prev);
@@ -69,8 +72,9 @@ public:
 		for (size_t i = nVert + 2; i <= 2 * nVert; ++i)
 		{
 			#pragma omp parallel for
-			for (size_t j = i - nVert + nPts; j <= 2 * nPts - 2 * nVert + i; ++j)
+			for (int j_ = static_cast<int>(i - nVert + nPts); j_ <= static_cast<int>(2 * nPts - 2 * nVert + i); ++j_)
 			{
+				const size_t j = static_cast<size_t>(j_);
 				const size_t k1 = i - nVert + nPts - 1;
 				const size_t k2 = j - 1;
 				base::fill_cell(nPts, dist, i, j, k1, k2, cost, prev);
