@@ -1,5 +1,5 @@
 import numpy as np
-import dppoly as dpp
+import dp_poly as dpp
 import matplotlib.pyplot as ppt
 
 pts1 = np.array([[1,1],[3,1],[5,2],[6,3],[7,4],[8,6],[8,8]])

@@ -97,7 +97,7 @@ static PyMethodDef dp_poly_methods[] =
 PyMODINIT_FUNC
 initdppoly(void)
 {
-	Py_InitModule("dppoly", dp_poly_methods);
+	Py_InitModule("dp_poly", dp_poly_methods);
 }
 
 int main(int argc, char* argv[])
