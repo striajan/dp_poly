@@ -56,10 +56,4 @@ public:
 	}
 };
 
-template <typename T>
-std::vector<size_t> dp_poly_open(const std::vector< vec2<T> >& pts, const size_t nVert)
-{
-	return dp_open<T>()(pts, nVert);
-}
-
 #endif

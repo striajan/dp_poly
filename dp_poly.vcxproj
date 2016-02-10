@@ -85,6 +85,7 @@
     <ClInclude Include="dp_base.hpp" />
     <ClInclude Include="dp_close.hpp" />
     <ClInclude Include="dp_open.hpp" />
+    <ClInclude Include="dp_poly_python.hpp" />
     <ClInclude Include="mat.hpp" />
     <ClInclude Include="utils.hpp" />
     <ClInclude Include="vec2.hpp" />
