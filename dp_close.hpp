@@ -129,4 +129,10 @@ public:
 
 };
 
+template <typename T>
+std::vector<size_t> dp_poly_close(const std::vector< vec2<T> >& pts, const size_t nVert)
+{
+	return dp_close<T>()(pts, nVert);
+}
+
 #endif
