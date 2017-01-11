@@ -8,3 +8,4 @@ setup(ext_modules = cythonize(Extension(
     extra_compile_args=['-std=c++11', '-fopenmp'],
     extra_link_args=['-lgomp'],
 )))
+
