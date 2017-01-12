@@ -4,7 +4,8 @@ dp_close:
 dp_open:
 	mex dp_open_mex.cpp
 
-all: dp_close dp_open
+all:
+	dp_close dp_open
 
 clean:
 	rm *.mexa64
