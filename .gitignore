@@ -6,6 +6,7 @@
 *.mexa64
 *.mexw64
 *.opendb
+*.pyc
 *.pyd
 *.sdf
 *.so
