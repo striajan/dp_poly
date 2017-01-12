@@ -7,5 +7,5 @@ python setup.py build_ext --inplace
 rm -f dp_poly.cpp
 rm -rf build
 
-python dp_poly_test.py
+#python dp_poly_test.py
 
